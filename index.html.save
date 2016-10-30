@@ -1,0 +1,235 @@
+<html>
+<head>
+    
+    <title>WebSmudge Netscape</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+    
+    <!-- ThreeJS Scripts -->
+    <script src="http://threejs.org/build/three.min.js"></script>
+    <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+    <script src="http://threejs.org/examples/js/Detector.js"></script>
+    <script src="http://threejs.org/examples/js/libs/stats.min.js"></script> 
+    
+<script>
+
+			var camera, scene, renderer;
+    
+            var clock = new THREE.Clock();
+            var delta = clock.getDelta(); // seconds.
+            var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+			var container, stats;    
+
+			var mouseX = 0, mouseY = 0;
+    
+
+			function init() {
+                
+                container = document.getElementById("container");
+				/* document.body.appendChild( container ); */
+                
+                var HEIGHT = document.getElementById("container").clientHeight,
+                WIDTH = document.getElementById("container").clientWidth;
+    
+			    var windowHalfX = WIDTH / 2;
+			    var windowHalfY = HEIGHT/ 2;
+				
+				camera = new THREE.PerspectiveCamera(45, WIDTH /HEIGHT , 0.1, 1000);
+				camera.position.z = 600;
+
+				// scene
+
+				scene = new THREE.Scene();
+
+				scene.background = new THREE.Color( 0xf1b55e );
+
+				var ambient = new THREE.AmbientLight( 0xffdba5 );
+				scene.add( ambient );
+
+				var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+				directionalLight.position.set( 0, 0, 1 );
+				scene.add( directionalLight );
+
+				// texture
+
+				var manager = new THREE.LoadingManager();
+				manager.onProgress = function ( item, loaded, total ) {
+
+					console.log( item, loaded, total );
+
+				};
+
+				// model
+				var loader = new THREE.OBJLoader( manager );
+				loader.load( 'Sphere-E5-2.obj', function ( object ) {
+
+					object.traverse( function ( child ) {
+
+						if ( child instanceof THREE.Mesh ) {
+
+							//child.material.map = texture;
+
+						}
+
+					} );
+
+					object.position.x = 0;
+                    object.rotation.x = 5* Math.PI / 180;
+                    object.rotation.z = 5* Math.PI / 180;
+                    object.scale.x = 100;
+                    object.scale.y = 100;
+                    object.scale.z = 100;
+                    obj = object
+					scene.add( obj );
+
+				} );
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( WIDTH, HEIGHT);
+				container.appendChild( renderer.domElement );
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+				/*window.addEventListener( 'resize', onWindowResize, false ); */
+
+			}
+
+
+			function onDocumentMouseMove( event ) {
+				mouseX = ( event.clientX - windowHalfX ) / 2;
+				mouseY = ( event.clientY - windowHalfY ) / 2;
+			}
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+
+			function render() {
+                obj.rotation.x += (1.2*(Math.PI / 180));
+                obj.rotation.x %=360;
+
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+
+				camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+			}
+</script>
+</head>
+<body onload="init(); animate();">
+    
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader" style="margin-top:50px;">
+  <div class="w3-center">
+  <h4  style="background-color:black;">WELCOME TO</h4>
+  <h1 class="w3-xxxlarge w3-animate-bottom" style="background-color:black">THE WEBSLUDGE NETSCAPE</h1>
+    <div class="w3-padding-32">
+      <button class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">Fields of Meaning</button>
+    </div>
+  </div>
+</header>
+    
+<!-- Navbar -->
+<ul class="w3-navbar w3-theme w3-top w3-left-align w3-large" style="z-index:4;">
+  <li class="w3-opennav w3-right w3-hide-large">
+    <a class="w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+  </li>
+  <li><a href="#" class="w3-theme-l1">Logo</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">About</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Values</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">News</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Contact</a></li>
+  <li class="w3-hide-medium w3-hide-small"><a href="#" class="w3-hover-white">Clients</a></li>
+  <li class="w3-hide-medium w3-hide-small"><a href="#" class="w3-hover-white">Partners</a></li>
+</ul>
+
+<!-- Overlay effect when opening sidenav on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+    
+<!-- Main content: shift it to the right by 250 pixels when the sidenav is visible -->  
+    
+<div class="w3-main" style="margin-left:10px">
+    <div class="w3-row w3-padding-64">
+        <div class="w3-twothird w3-container">
+            <div class="newspaper">
+                <h1 class="w3-text-teal">Heading</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
+                    dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+        </div>
+            <div id="container" class="w3-third w3 container" style="border:0px solid black;width:280px;height:240px; padding:16px"></div>
+    </div>
+    
+          <!-- Blog entry -->
+  <div class="w3-card-4 w3-margin w3-white">
+  <img src="img_woods.jpg" alt="Nature" style="width:100%">
+    <div class="w3-container w3-padding-8" style="background-color:#ffdba5">
+      <h3><b>TITLE HEADING</b></h3>
+      <h5>Title description, <span class="w3-opacity">April 7, 2014</span></h5>
+    </div>
+
+    <div class="w3-container" style="background-color:#ffdba5">
+      <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
+        tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <p><button class="w3-btn w3-padding-large w3-white w3-border w3-hover-border-black"><b>READ MORE »</b></button></p>
+        </div>
+        <div class="w3-col m4 w3-hide-small">
+          <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-tag">0</span></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-twothird w3-container">
+      <h1 class="w3-text-teal">Heading</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
+        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div class="w3-third w3-container">
+      <p class="w3-border w3-padding-large w3-padding-32 w3-center">BLOB</p>
+      <p class="w3-border w3-padding-large w3-padding-64 w3-center">BLOB</p>
+    </div>
+  </div>
+
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+      <h1 class="w3-text-teal">Heading</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
+        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div id="container2" class="w3-third w3 container" style="border:1px solid black;width:280px;height:240px; padding:16px" >
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="w3-center w3-padding-32" style="background-color:#ffe">
+    <ul class="w3-pagination">
+      <li><a class="w3-black" href="#">1</a></li>
+      <li><a class="w3-hover-black" href="#">2</a></li>
+      <li><a class="w3-hover-black" href="#">3</a></li>
+      <li><a class="w3-hover-black w3-hide-small" href="#">4</a></li>
+      <li><a class="w3-hover-black w3-hide-small" href="#">5</a></li>
+      <li><a class="w3-hover-black" href="#">»</a></li>
+    </ul>
+  </div>
+
+  <footer id="myFooter">
+    <div class="w3-container w3-theme-l1">
+      <p>Powered by <a href="http://www.w3schools.com/w3css/default.asp" target="_blank">WebSmudge</a></p>
+    </div>
+  </footer>
+
+<!-- END MAIN -->
+</div>
+    
+    
+</body>
