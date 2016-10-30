@@ -1,0 +1,21 @@
+
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto Slab"; background-color:#ffbfa5}
+.w3-sidenav a,.w3-sidenav h4 {padding: 12px;}
+.w3-navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.newspaper {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+    column-gap: 40px;
+    -webkit-column-rule-style: dotted; /* Chrome, Safari, Opera */
+    -moz-column-rule-style: dotted; /* Firefox */
+    column-rule-style: dotted;
+    -webkit-column-rule-width: 1px; /* Chrome, Safari, Opera */
+    -moz-column-rule-width: 1px; /* Firefox */
+    column-rule-width: 1px;
+}

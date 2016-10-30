@@ -1,0 +1,137 @@
+<html>
+<head>
+    
+    <title>WebSmudge Netscape</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+    
+    <!-- MathJax for LaTeX -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+</head>
+    
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader" style="margin-top:50px;">
+  <div class="w3-center">
+  <h1 class="w3-xxxlarge" style="background-color:black">THE WEBSLUDGE NETSCAPE</h1>
+  </div>
+</header>
+    
+<!-- Navbar -->
+<ul class="w3-navbar w3-theme w3-top w3-left-align w3-large" style="z-index:4;">
+  <li><a href="#" class="w3-theme-l1 w3-hide-small">Logo</a></li>
+  <li class="w3-theme-l1"><a href="index.html" class="w3-hover-white">Home</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Contact</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Links</a></li>
+</ul>
+    
+<!-- Main content -->  
+    
+<div class="w3-main" style="margin-left:0px; padding-bottom: 0px;">
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container" style="border-right-style: dashed;">
+      <h1 class="w3-text-white">Derivation of The Navier Stokes Equations</h1>
+        
+                <p> The Navier Stokes equations are a system of partial differential equations which describe the time-evolution of fluids. They are remarkably compact, enormously difficult if not impossible to solve,  and capable of describing a huge array of phenomena.</p>
+                
+                <p>This introduction's purpose is to offer the a glimpse into the physical and mathematical reasoning behind the Navier Stokes equations. This program is uniquely intersectional&mdash; indeed, as a model for a physical system,  a minimal set of physically motivated assumptions are neccessary. These assumptions are outstanding, however, in their subtlety&mdash; at times nothing more than sufficient smoothness of certain functions constitutes a hypothesis about nature. In many ways, the derivation of Navier Stokes is the closest we can hope to get to a purely mathematical discourse of a physical system. As we will see, they constitute an underdetermined "barebones" system that can accomodate additonal physics. 
+                </p>
+        
+            <h3>Overview of Continuum Fluid Mechanics </h3>
+               
+                
+                
+            <h3>Eulerian vs. Lagrangian Frames</h3>
+
+                <p> The Eulerian vs. Lagrangian schemes in mechanics are competing mathematical viewpoints for dealing with mechanical systems and how physicists model them. The Lagrangian viewpoint is the one you are probably most familiar with. It treats quantities such as velocity and density as attached to the specific particles. Labeling particles with subscripts, we would be are in the <i>Lagrangian</i> variables </p>
+                    <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\rho_{1}(t),\rho_{2}(t),\dots,\rho_{n}(t)	\quad \mathrm{        (density)} \\
+                        u_{1}(t),u_{2}(t),\dots,u_{n}(t)		\mathrm{\quad(velocity).}$$</p>
+                <p>This is the familiar language of Newtonian mechanics. We are able to derive the dynamics of this system of particles by applying Newton's laws to each particle separately:</p>
+                    <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$m_{k}a_{k}=m_{k}\frac{du_{k}}{dt}=\sum_{i\not=k}F_{ik}.$$</p>
+                <p>Here we are looking at particle $k$, which has fixed mass $m_{k}$, and summing the effective forces from all other particles on $k$. 
+
+                You could imagine this kind of analysis becoming impossible when $n$
+                is large&mdash; on the order of $10^{23}$
+                in macroscopic samples. That's where the Eulerian frame comes in handy.
+               </p>
+
+        <h2>Derivation of Momentum Equation</h2>
+
+                <p>There are many ways to "derive" the Navier-Stokes equations. They usually proceed by considering small volumes of fluid that either move themselves, or have fluid moving through them. Then, by considering the total momentum change of this test volume and applying some form of Newton's law&mdash; and dividing/multiplying by lots of infinitessimals&mdash; you get the system of partial differential equations</p>
+                
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">    $$\rho\left[\frac{\partial\boldsymbol{V}}{\partial t}+\left(\boldsymbol{V}\cdot\nabla\right)\boldsymbol{V}\right]	=	-\nabla p+\mu\nabla^{2}\boldsymbol{V}
+                    \frac{\partial\rho}{\partial t}+\nabla\cdot\left(\rho\boldsymbol{V}\right)	=	0.$$ </p>
+                    
+                <p>The variables are velocity $\boldsymbol{V}(x,y,z,t)$, and pressure $p(x,y,z,t)$, which vary continuously with position and time. In more detail, the density $\rho$ may also be a variable. </p>
+                <p> A mathematician may find explainations with infinitessimals instructive, because they sacrifice too much rigor (even though a physical derivation of an equation of motion is never perfectly rigorous). This trouble can be cleared up by the following explaination for the derivation of the LHS of equation (1):</p>
+
+                <p>Besides some very simple physical intuition (conservation of mass), we really don't know how to describe the fundamental dynamics of continua. But we are able to describe the dynamics of point particles via Newton's Laws. Since we want to use an Eulerian point-of-view to solve fluid problems, we will require some way of translating one viewpoint to another. So instead of starting from scratch to find the fundmental equations for continuum physics, we will try to translate the Lagrangian dynamics of a fluid parcel to the Eulerian, fixed-grid viewpoint. In fact, this will give exactly the equation (1). Equation (2) is a simple statement of conservation of mass. Occasionally, the quantity $\rho$
+                is a variable, which requires a third equation from thermodynamics to make the system well-posed.</p>
+
+                <p>If we attach ourselves to a fluid parcel with a fixed collection of molecules in it, as time progresses the boundary of this parcel will compress and expand in order to contain all the same molecules. We make the assumption that this parcel is small enough that it has a well-defined velocity and density $\rho$. Now, indexing the pacel by $k$, the quantity </p>
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\boldsymbol{V}_{k}=u_{k}(x,y,z,t)\boldsymbol{i}+v_{k}(x,y,z,t)\boldsymbol{j}+w_{k}(x,y,z,t)\boldsymbol{k}$$</p>
+  
+                <p>varies with time as the parcel moves along the path</p>
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$x(t)\boldsymbol{i}+y(t)\boldsymbol{j}+z(t)\boldsymbol{k}.$$</p>
+
+                <p>This is a Lagrangian parcel, since it's entire dependence is descibed by a single variable $t$. We can now use Newton's Law on this parcel. If the volume of this pacel is denoted by $\delta x\delta y\delta z$, the mass must be constant and equal to $m_{k}=\rho\cdot\delta x\delta y\delta z$. The acceleration must be found using the chain rule however, since $x,y,z$ each depend on $t$. The acceleration is given by </p>
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\boldsymbol{a}(x,y,z,t)	=	\frac{d\boldsymbol{V}}{dt}=\frac{\partial\boldsymbol{V}}{\partial t}+\frac{\partial\boldsymbol{V}}{\partial x}\frac{\partial x}{\partial t}+\frac{\partial\boldsymbol{V}}{\partial y}\frac{\partial y}{\partial t}+\frac{\partial\boldsymbol{V}}{\partial z}\frac{\partial z}{\partial t} \\
+	            
+                =	\frac{\partial\boldsymbol{V}}{\partial t}+\left(\frac{\partial x}{\partial t},\frac{\partial y}{\partial t},\frac{\partial z}{\partial t}\right)\cdot\nabla\boldsymbol{V}.$$</p>
+                    
+                <p>The vector</p> 
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\left(\frac{\partial x}{\partial t},\frac{\partial y}{\partial t},\frac{\partial z}{\partial t}\right)$$</p>
+                    
+                <p>is identified with $\boldsymbol{V}$, the Eulerian velocity field. Why should this be so? Remember we are following a fluid parcel, but ultimately want an Eulerian description of the entire fluid. In order for this correspondence to hold, the velocity of the parcel must be exactly the field value $\boldsymbol{V}(x,y,z,t)$. Therefore we get </p>
+                
+                <p style="background-color: white; border-style: solid; padding: 5px;white-space:normal; word-wrap:break-word;">$$\boldsymbol{a}(x,y,z,t)=\frac{\partial\boldsymbol{V}}{\partial t}+\boldsymbol{V}\cdot\nabla\boldsymbol{V}=\frac{\partial\boldsymbol{V}}{\partial t}+\left(\boldsymbol{V}\cdot\nabla\right)\boldsymbol{V}.$$ </p>
+                    
+                <p>Multiplying this by the mass of the parcel gives </p>
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$m_{k}\boldsymbol{a}=\rho\left[\frac{\partial\boldsymbol{V}}{\partial t}+\left(\boldsymbol{V}\cdot\nabla\right)\boldsymbol{V}\right]\,\delta x\delta y\delta z.$$</p>
+
+                <p>Besides the volume of the parcel, $\delta x\delta y\delta z$, this is exactly the LHS of equation (1)! It is now apparent that (1) is an expression of Newton's Second law for a fluid parcel. The remarkable thing is that we have gotten an equation for the Eulerian viewpoint with an analysis of a Lagrangian parcel. As you may guess, the RHS of (1) will just be the sum of forces acting on the parcel, $\sum F_{k}$. We will express the terms as force per volume however, so that we can cancel $\delta x\delta y\delta z$ on both sides to get the actual relation. I will talk about this in the next series of notes.</p>
+
+                <p>Equation (2) follows from Gauss's Law with the conservation of mass, </p>
+                
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\frac{d}{dt}\int_{\Omega}\rho\,dV=-\int_{\partial\Omega}\rho\boldsymbol{V}\cdot\boldsymbol{n}\,dA.$$</p>
+
+                <p>This equation says that the total change in mass in some test volume $\Omega$
+                must be the same as the mass flux $\rho\boldsymbol{V}$
+                through the surface of the volume $\partial\Omega$. The negative sign is a convention. </p>
+
+         <ul class="w3-pagination">
+          <li><a class="w3-black" href="Nav-Stokes-1.html">1</a></li>
+          <li><a class="w3-hover-black" href="Nav-Stokes-2.html">2</a></li>
+          <li><a class="w3-hover-black" href="#">-></a></li>
+        </ul>
+  
+        
+    </div>
+    <div id="container2" class="w3-third w3 container" >
+    </div>
+  </div>
+    
+
+  <footer id="myFooter">
+    <div class="w3-container" style="background-color: #f9d159; padding: 25px; border-top: solid; border-color: black;">
+      <p style="text-align: center;">Powered by <a href="" target="_blank">WebSmudge</a></p>
+    </div>
+  </footer>
+
+<!-- END MAIN -->
+</div>
+    
+    
+</body>

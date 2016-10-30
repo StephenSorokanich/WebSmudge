@@ -1,0 +1,159 @@
+<html>
+<head>
+    
+    <title>WebSmudge Netscape</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+    
+    <!-- MathJax for LaTeX -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+</head>
+    
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader" style="margin-top:50px;">
+  <div class="w3-center">
+  <h1 class="w3-xxxlarge" style="background-color:black">THE WEBSLUDGE NETSCAPE</h1>
+  </div>
+</header>
+    
+<!-- Navbar -->
+<ul class="w3-navbar w3-theme w3-top w3-left-align w3-large" style="z-index:4;">
+  <li><a href="#" class="w3-theme-l1 w3-hide-small">Logo</a></li>
+  <li class="w3-theme-l1"><a href="index.html" class="w3-hover-white">Home</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Contact</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Links</a></li>
+</ul>
+    
+<!-- Main content -->  
+    
+<div class="w3-main" style="margin-left:0px; padding-bottom: 10px;">
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container" style="border-right-style: dashed;">
+      <h1 class="w3-text-white">Derivation of The Navier Stokes Equations (continued)</h1>
+        
+        <h2>The RHS of the Momentum Equation</h2>
+
+                <p>As we saw, if $dxdydz$
+                    is the volume of an imagined fluid parcel, the term</p>
+                
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\rho\left[\frac{\partial\boldsymbol{V}}{\partial t}+\left(\boldsymbol{V}\cdot\nabla\right)\boldsymbol{V}\right]\,\delta x\delta y\delta z$$</p>
+
+                <p>expressses the change in momentum $m\boldsymbol{a}$
+
+                of the parcel in Newton's Second Law. This followed by considering momentarily a Lagrangian point-of-view. As you may expect, the right side of (1) should therefore express the forces per unit volume acting on the fluid parcel . These forces must be expressed as force-densities (force per volume and force per surface area) in order to factor out $dxdydz$ from both sides. Defining the material derivative</p>
+                
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\frac{D\boldsymbol{V}}{Dt}\equiv\frac{\partial\boldsymbol{V}}{\partial t}+\left(\boldsymbol{V}\cdot\nabla\right)\boldsymbol{V}$$,</p>
+                
+                <p>the most general form of Newton's second law for the parcel reads:</p>
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\rho\frac{D\boldsymbol{V}}{Dt}=\int\boldsymbol{f}_{surf}\,dS+\int\boldsymbol{f}_{body}\,dV.$$</p>
+
+                <p>The total force has been decomposed into surface and body forces. These forces contribute by surface densities and volume densities appropriately, as expressed by the surface/volume integrals above. Let's start with body forces. These might be electromagnetic forces or gravitational. The most simple form occurs when the body force can be written as a field that depends only on position $r$,</p>
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\boldsymbol{F}_{body}=\int\rho(r)\boldsymbol{g}(r)\,dV.$$</p>
+                    
+                <p>In most cases on Earth, the only body force we need to consider is gravity, and this is essentially constant in all applications. Recall from intro physics,</p>
+        
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$F_{grav}=-mg$$. In terms of the body force, we can write $$\boldsymbol{f}_{grav}=-\rho g\boldsymbol{k}.$$</p>
+                
+                <p>Surface forces, on the other hand, only contribute at the interface of a fluid parcel. Expressing a general surface force is more difficult, since the direction and magnitude of the surface force at a given point may change depending on the shape of the surface. This suggests that $\boldsymbol{f}_{surf}$ is a function of the unit surface normal, $\boldsymbol{n}$. The vector $\boldsymbol{f}_{surf}$ will be denoted $\boldsymbol{T}(\boldsymbol{n})$, called the stress vector. </p>
+
+                <p>There is a surprising theorem stating that every component of $\boldsymbol{T}(\boldsymbol{n})$ at a point $\boldsymbol{r}$ on the surface is represented by dot-product of $\boldsymbol{n}$ with a vector field $\boldsymbol{\sigma}_{i}(\boldsymbol{r},t)$. That is, $\boldsymbol{T}_{i}^{(\boldsymbol{n})}(\boldsymbol{r},t)=\boldsymbol{n}\cdot\boldsymbol{\sigma}_{i}(\boldsymbol{r},t)$. The amazing thing is that $\boldsymbol{\sigma}_{i}$ is inependent of the surface normal $\boldsymbol{n}$, so that it isn't necessary to consider the details of surface shape when calculating the stress. This is the same as saying that to know the stress vector at any surface point it is only necessary to know the stress vector on three mutually perpendicular planes. It's also the same as saying that the stress vector $\boldsymbol{T}$ at a surface point will always be a linear function of the surface normal $\boldsymbol{n}$. See “Cauchy's Stress Theorem” for more details on the justification.</p>
+
+                <p>We get the three equations for the components of $\boldsymbol{F}_{surf}$,</p>
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$(\boldsymbol{F}_{surf})_{x}	=	\int\boldsymbol{n}\cdot\boldsymbol{\sigma}_{x}\,dS=\int(\nabla\cdot\boldsymbol{\sigma}_{x})\,dV
+                (\boldsymbol{F}_{surf})_{y}	=	\int\boldsymbol{n}\cdot\boldsymbol{\sigma}_{y}\,dS=\int(\nabla\cdot\boldsymbol{\sigma}_{y})\,dV
+                (\boldsymbol{F}_{surf})_{z}	\\=	\int\boldsymbol{n}\cdot\boldsymbol{\sigma}_{z}\,dS=\int(\nabla\cdot\boldsymbol{\sigma}_{z})\,dV.$$</p>
+ 
+                <p>The rightmost equalities follow using the Divergence Theorem to translate the surface integrals to volume integrals. The components $\boldsymbol{T}_{x},\,\boldsymbol{T}_{y},\,\boldsymbol{T}_{z}$ are usually summarized in the Cauchy stress tensor,</p> 
+                
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\boldsymbol{\sigma}=\left[\begin{array}{ccc}
+                \boldsymbol{T}_{x} & \boldsymbol{T}_{y} & \boldsymbol{T}_{z}\end{array}\right]=\left(\begin{array}{ccc}
+                \sigma_{11} & \tau_{12} & \tau_{13}\\
+                \tau_{21} & \sigma_{22} & \tau_{32}\\
+                \tau_{31} & \tau_{23} & \sigma_{33}
+                    \end{array}\right)$$</p>
+                    
+                <p>In fluid mechanics, this tensor is always broken into two components as follows:</p>
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\left(\begin{array}{ccc}
+                \sigma_{11} & \tau_{12} & \tau_{13}\\
+                \tau_{21} & \sigma_{22} & \tau_{32}\\
+                \tau_{31} & \tau_{23} & \sigma_{33}
+                \end{array}\right)=-\left(\begin{array}{ccc}
+                p & 0 & 0\\
+                0 & p & 0\\
+                0 & 0 & p
+                \end{array}\right)+\left(\begin{array}{ccc}
+                \sigma_{11}+p & \tau_{12} & \tau_{13}\\
+                \tau_{21} & \sigma_{22}+p & \tau_{32}\\
+                \tau_{31} & \tau_{23} & \sigma_{33}+p
+                    \end{array}\right)$$</p>
+                
+                <p>where $p=-\frac{1}{3}(\sigma_{11}+\sigma_{22}+\sigma_{33})$
+                is the pressure. We break up $\boldsymbol{\sigma}$
+                as above partially by convention, also because in cases where there is no viscosity, there will always still be pressure. You may have heard the description that $\tau_{ij}$
+                represents the stress in direction $\boldsymbol{e}_{j}$
+                acting on a face with surface normal $\boldsymbol{e}_{i}$.</p>
+
+                <p>Since the stress vector varies continuously, the terms $\int(\nabla\cdot\boldsymbol{T}_{i})dV$
+                can be approximated by $(\nabla\cdot\boldsymbol{T}_{i})dxdydz$
+                    for sufficiently small volumes.</p>
+
+                <p>Putting the surface and volume forces together and dividing by $dxdydz$
+                    gives</p> 
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$RHS=-\nabla p+\nabla\cdot\sigma+f.$$</p>
+                    
+                <p>The stress tensor is the most difficult term to derive. If you followed closely, the only place where rigor was lacking in the above derivation was turning volume integrals into the terms on the RHS by approximating. In actuality, we only approximated the RHS by the volume elements $dxdydz$ because the LHS was not a volume integral. If you feel uncomfortable about this the Reynold's Transport Theorem will allow you to express the LHS as a volume integral. Then since the integral </p>
+                
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\begin{split}\int\rho\left[\frac{\partial\boldsymbol{V}}{\partial t}+\left(\boldsymbol{V}\cdot\nabla\right)\boldsymbol{V}\right]dV=\int\left(-\nabla p+\nabla\cdot\sigma+f\right)dV\end{split}$$</p>
+                    
+                <p>holds for any control volume, we can equate terms inside the integrals.</p>
+
+                <p>The equations just derived are actually more general than Navier Stokes. The Navier Stokes equations result from a specific assumption about the form of the stress tensor $\boldsymbol{\sigma}$.</p>
+                    
+                <p>Specifically, the components of $\boldsymbol{\sigma}$ are such that the force terms become </p>
+                    
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$RHS=-\nabla p+\mu\nabla^{2}\boldsymbol{V}-\rho g\boldsymbol{k}.$$</p>
+  
+                <p>Here by $\nabla^{2}\boldsymbol{V}$ we mean for </p>
+                <p style="background-color: white; border-style: solid; padding: 5px; white-space:normal; word-wrap:break-word;">$$\boldsymbol{V}=u\boldsymbol{i}+v\boldsymbol{j}+w\boldsymbol{k}
+                \nabla^{2}\boldsymbol{V}=\left(\begin{array}{c}
+                \nabla^{2}u\\
+                \nabla^{2}v\\
+                \nabla^{2}w
+                \end{array}\right).$$ </p>
+        
+        <ul class="w3-pagination">
+          <li><a class="w3-hover-black" href="Nav-Stokes-1.html">1</a></li>
+          <li><a class="w3-black" href="Nav-Stokes-2.html">2</a></li>
+          <li><a class="w3-hover-black" href="#">-></a></li>
+        </ul>
+        
+    </div>
+    <div id="container2" class="w3-third w3 container" >
+    </div>
+  </div>
+    
+  <footer id="myFooter">
+    <div class="w3-container" style="background-color: #f9d159; padding: 25px; border-top: solid; border-color: black;">
+      <p style="text-align: center;">Powered by <a href="" target="_blank">WebSmudge</a></p>
+    </div>
+  </footer>
+
+<!-- END MAIN -->
+</div>
+    
+    
+</body>
