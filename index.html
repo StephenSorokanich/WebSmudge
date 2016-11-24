@@ -45,7 +45,7 @@
 
 				scene = new THREE.Scene();
 
-				scene.background = new THREE.Color( 0xffbfa5 );
+				scene.background = new THREE.Color( 0x000000 );
 
 				var ambient = new THREE.AmbientLight( 0xfe5757 );
 				scene.add( ambient );
@@ -88,7 +88,8 @@
 
 				} );
 
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer({alpha: true} );
+				renderer.setClearColor( 0x000000, 0);
 				renderer.setSize( WIDTH, HEIGHT);
 				container.appendChild( renderer.domElement );
 
