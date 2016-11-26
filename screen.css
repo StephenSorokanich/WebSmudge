@@ -9,7 +9,7 @@ h1,h3 {font-family: "Roboto Slab";}
     padding-bottom: 12px;
 }
 
-.w3-main {background: repeating-linear-gradient(
+.w3-main {-webkit-backface-visibility: hidden; background: repeating-linear-gradient(
   -55deg,
   #ffbfa5,
   #ffbfa5 10px,
