@@ -5,6 +5,15 @@
  * @author Luca Antiga 	/ http://lantiga.github.io
  */
 
+//audio
+
+var ctx = new (window.AudioContext || window.webkitAudioContext)(); //webkitAudioContext is for Safari users; ctx is a container for all sound
+var buf;
+var src;
+var analyser = ctx.createAnalyser(); //returns an AnalyserNode, which provides real-time frequency and time-domain analysis information
+analyser.smoothingTimeConstant = 1;
+var mp3_location = 'davids_synth.mp3';
+
 THREE.TrackballControls = function ( object, domElement ) {
 
     var _this = this;
@@ -635,9 +644,11 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
         if (!renderer) {
             alert('Three.jsの初期化に失敗しました。');
         }
+        bodyHeight = window.innerHeight;
+        bodyWidth = window.innerWidth;
         renderer.setSize(bodyWidth, bodyHeight);
         canvas.appendChild(renderer.domElement);
-        renderer.setClearColor(0xeeeeee, 1.0);
+        renderer.setClearColor(0xfcbd50, 1.0);
 
         scene = new THREE.Scene();
     };
@@ -930,3 +941,33 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
 
 },{"./get":4}]},{},[1]);
 
+function loadFile() {
+    var req = new XMLHttpRequest();
+    req.open("GET",mp3_location,true);
+    req.responseType = "arraybuffer";
+    req.onload = function() {
+        //decode the loaded data
+        ctx.decodeAudioData(req.response, function(buffer) {
+            buf = buffer; //the ArrayBuffer is converted to an AudioBuffer, which holds our audio data in memory
+            play();
+        });
+    };
+    req.send();
+}
+
+function play() {
+    //create a source node from the buffer (type: AudioBufferSourceNode)
+    src = ctx.createBufferSource(); //src is the "record player"
+
+    src.buffer = buf; //src.buffer is the "record"
+    src.loop = true;
+
+    //connect to the final output node (the speakers)
+    src.connect(analyser); //connect the record player to the AnalyserNode (where real-time data is)
+
+    analyser.connect(ctx.destination); //ctx.destination is the speakers
+    //play immediately
+    src.start();
+}
+
+loadFile();
