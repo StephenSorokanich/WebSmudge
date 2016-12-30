@@ -1,16 +1,11 @@
 /**
- * Based on yoichi kobayashi's Wriggling sphere - https://codepen.io/ykob/pen/zGpjeK
+ * Adapted from yoichi kobayashi's Wriggling sphere - https://codepen.io/ykob/pen/zGpjeK
  * Eli Goberdon - https://github.com/egoberdon
  * Stephen Sorokanich - https://github.com/StephenSorokanich
  */
 
 
 // setting up blob world
-var debounce = require('./debounce');
-var Camera = require('./camera');
-var PointLight = require('./pointLight');
-var HemiLight = require('./hemiLight');
-var Mesh = require('./mesh');
 var bodyWidth = document.body.clientWidth;
 var bodyHeight = document.body.clientHeight;
 var fps = 60;
@@ -634,206 +629,190 @@ THREE.TrackballControls = function ( object, domElement ) {
 THREE.TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototype );
 THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
 
-        var Camera = function() {
-            this.width = 0;
-            this.height = 0;
-            this.rad1 = 0;
-            this.rad2 = 0;
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
-            this.r = 0;
-            this.obj;
-            this.trackball;
-        };
+var Camera = function() {
+    this.width = 0;
+    this.height = 0;
+    this.rad1 = 0;
+    this.rad2 = 0;
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.r = 0;
+    this.obj;
+    this.trackball;
+};
 
-        Camera.prototype.init = function(rad1, rad2, width, height) {
-            this.width = width;
-            this.height = height;
-            this.r = 1200;
-            this.rad1 = rad1;
-            this.rad2 = rad2;
-            this.obj = new THREE.PerspectiveCamera(50, this.width / this.height, 1, 10000);
-            this.setPosition(this.rad1, this.rad2, this.r);
-            this.initTrackBall();
-        };
+Camera.prototype.init = function(rad1, rad2, width, height) {
+    this.width = width;
+    this.height = height;
+    this.r = 1200;
+    this.rad1 = rad1;
+    this.rad2 = rad2;
+    this.obj = new THREE.PerspectiveCamera(50, this.width / this.height, 1, 10000);
+    this.setPosition(this.rad1, this.rad2, this.r);
+    this.initTrackBall();
+};
 
-        Camera.prototype.setPosition = function(rad1, rad2) {
-            var points = get.pointSphere(rad1, rad2, this.r);
-            this.obj.position.set(points[0], points[1], points[2]);
-            this.obj.up.set(0, 1, 0);
-            this.obj.lookAt({
-                x: 0,
-                y: 0,
-                z: 0
-            });
-        };
+Camera.prototype.setPosition = function(rad1, rad2) {
+    var points = pointSphere(rad1, rad2, this.r);
+    this.obj.position.set(points[0], points[1], points[2]);
+    this.obj.up.set(0, 1, 0);
+    this.obj.lookAt({
+        x: 0,
+        y: 0,
+        z: 0
+    });
+};
 
-        Camera.prototype.initTrackBall = function() {
-            this.trackball = new THREE.TrackballControls(this.obj, this.canvas);
-            this.trackball.screen.width = this.width;
-            this.trackball.screen.height = this.height;
-            this.trackball.noRotate = false;
-            this.trackball.rotateSpeed = 3;
-            this.trackball.noZoom = true;
-            this.trackball.zoomSpeed = 1;
-            this.trackball.noPan = false;
-            this.trackball.maxDistance = 3000;
-            this.trackball.minDistance = 500;
-        };
+Camera.prototype.initTrackBall = function() {
+    this.trackball = new THREE.TrackballControls(this.obj, this.canvas);
+    this.trackball.screen.width = this.width;
+    this.trackball.screen.height = this.height;
+    this.trackball.noRotate = false;
+    this.trackball.rotateSpeed = 3;
+    this.trackball.noZoom = true;
+    this.trackball.zoomSpeed = 1;
+    this.trackball.noPan = false;
+    this.trackball.maxDistance = 3000;
+    this.trackball.minDistance = 500;
+};
 
-        var timer;
-
-        object.addEventListener(eventType, function(event) {
-            clearTimeout(timer);
-            timer = setTimeout(function(){
-                callback(event);
-            }, 500);
-        }, false);
-
-    var exports = function(){
-        var Get = function() {};
-
-        Get.prototype.randomInt = function(min, max){
-            return Math.floor(Math.random() * (max - min)) + min;
-        };
-
-        Get.prototype.degree = function(radian) {
-            return radian / Math.PI * 180;
-        };
-
-        Get.prototype.radian = function(degrees) {
-            return degrees * Math.PI / 180;
-        };
-
-        Get.prototype.pointSphere = function(rad1, rad2, r) {
-            var x = Math.cos(rad1) * Math.cos(rad2) * r;
-            var z = Math.cos(rad1) * Math.sin(rad2) * r;
-            var y = Math.sin(rad1) * r;
-            return [x, y, z];
-        };
-
-        return Get;
-    };
-
-    var exports = function(){
-        var HemiLight = function() {
-            this.rad1 = 0;
-            this.rad2 = 0;
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
-            this.r = 0;
-            this.obj;
-        };
-
-        HemiLight.prototype.init = function(scene, rad1, rad2, r, hex1, hex2, intensity) {
-            this.r = r;
-            this.obj = new THREE.HemisphereLight(hex1, hex2, intensity);
-            this.setPosition(rad1, rad2);
-            scene.add(this.obj);
-        };
-
-        HemiLight.prototype.setPosition = function(rad1, rad2) {
-            var points = get.pointSphere(rad1, rad2, this.r);
-            this.obj.position.set(points[0], points[1], points[2]);
-        };
-
-        return HemiLight;
-    };
-
-    var exports = function() {
-        var Mesh = function() {
-            this.r = 0;
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
-            this.geometry;
-            this.material;
-            this.mesh;
-            this.vertexArr = [];
-            this.vertexDeg = [];
-            this.vertexWaveCoe = 0;
-        };
-
-        Mesh.prototype.init = function(scene, geometry, material) {
-            this.geometry = geometry;
-            this.material = material;
-            this.mesh = new THREE.Mesh(this.geometry, this.material);
-            this.r = this.geometry.parameters.radius;
-            this.vertexWaveCoe = this.r / 30;
-
-            this.geometry.mergeVertices();
-            this.updateVerticesInt();
-            this.setPosition();
-            this.mesh.rotation.set(Math.radian(45), 0,0);
-
-            scene.add(this.mesh);
-        };
-
-        Mesh.prototype.setPosition = function() {
-            this.mesh.position.set(this.x, this.y, this.z);
-        };
-
-        Mesh.prototype.updateVerticesInt = function() {
-            var vertices = this.mesh.geometry.vertices;
-            for (var i = 0; i < vertices.length; i++) {
-                var r = this.r;
-                this.vertexArr[i] = r;
-                this.vertexDeg[i] = get.randomInt(0, 360);
-                vertices[i].normalize().multiplyScalar(r);
-            }
-            this.mesh.geometry.computeVertexNormals();
-            this.mesh.geometry.computeFaceNormals();
-            this.mesh.geometry.verticesNeedUpdate = true;
-            this.mesh.geometry.elementsNeedUpdate = true;
-            this.mesh.geometry.normalsNeedUpdate = true;
-        };
-
-        Mesh.prototype.updateVertices = function() {
-            var vertices = this.mesh.geometry.vertices;
-            for (var i = 0; i < this.vertexArr.length; i++) {
-                var r;
-                this.vertexDeg[i] += 8;
-                r = this.vertexArr[i] + Math.sin(Math.radian(this.vertexDeg[i])) * this.vertexWaveCoe;
-                vertices[i].normalize().multiplyScalar(r);
-            }
-            this.mesh.geometry.computeVertexNormals();
-            this.mesh.geometry.computeFaceNormals();
-            this.mesh.geometry.verticesNeedUpdate = true;
-            this.mesh.geometry.elementsNeedUpdate = true;
-            this.mesh.geometry.normalsNeedUpdate = true;
-        };
-
-        return Mesh;
-    };
+// var timer;
+//
+// timer.addEventListener(eventType, function(event) {
+//             clearTimeout(timer);
+//             timer = setTimeout(function(){
+//                 callback(event);
+//             }, 500);
+//         }, false);
 
 
-    var exports = function(){
-        var PointLight = function() {
-            this.rad1 = 0;
-            this.rad2 = 0;
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
-            this.r = 0;
-            this.obj;
-        };
+function randomInt(min, max){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
-        PointLight.prototype.init = function(scene, rad1, rad2, r, hex, intensity, distance) {
-            this.r = r;
-            this.obj = new THREE.PointLight(hex, intensity, distance);
-            this.setPosition(rad1, rad2);
-            scene.add(this.obj);
-        };
+function degree (radian) {
+    return radian / Math.PI * 180;
+}
 
-        PointLight.prototype.setPosition = function(rad1, rad2) {
-            var points = get.pointSphere(rad1, rad2, this.r);
-            this.obj.position.set(points[0], points[1], points[2]);
-        };
+function radian(degrees) {
+    return degrees * Math.PI / 180;
+}
 
-        return PointLight;
-    };
+function pointSphere(rad1, rad2, r) {
+    var x = Math.cos(rad1) * Math.cos(rad2) * r;
+    var z = Math.cos(rad1) * Math.sin(rad2) * r;
+    var y = Math.sin(rad1) * r;
+    return [x, y, z];
+}
+
+var HemiLight = function() {
+    this.rad1 = 0;
+    this.rad2 = 0;
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.r = 0;
+    this.obj;
+};
+
+HemiLight.prototype.init = function(scene, rad1, rad2, r, hex1, hex2, intensity) {
+    this.r = r;
+    this.obj = new THREE.HemisphereLight(hex1, hex2, intensity);
+    this.setPosition(rad1, rad2);
+    scene.add(this.obj);
+};
+
+HemiLight.prototype.setPosition = function(rad1, rad2) {
+    var points = pointSphere(rad1, rad2, this.r);
+    this.obj.position.set(points[0], points[1], points[2]);
+};
+
+var Mesh = function() {
+    this.r = 0;
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.geometry;
+    this.material;
+    this.mesh;
+    this.vertexArr = [];
+    this.vertexDeg = [];
+    this.vertexWaveCoe = 0;
+};
+
+Mesh.prototype.init = function(scene, geometry, material) {
+    this.geometry = geometry;
+    this.material = material;
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.r = this.geometry.parameters.radius;
+    this.vertexWaveCoe = this.r / 30;
+
+    this.geometry.mergeVertices();
+    this.updateVerticesInt();
+    this.setPosition();
+    this.mesh.rotation.set(radian(45), 0,0);
+
+    scene.add(this.mesh);
+};
+
+Mesh.prototype.setPosition = function() {
+    this.mesh.position.set(this.x, this.y, this.z);
+};
+
+Mesh.prototype.updateVerticesInt = function() {
+    var vertices = this.mesh.geometry.vertices;
+    for (var i = 0; i < vertices.length; i++) {
+        var r = this.r;
+        this.vertexArr[i] = r;
+        this.vertexDeg[i] = randomInt(0, 360);
+        vertices[i].normalize().multiplyScalar(r);
+    }
+    this.mesh.geometry.computeVertexNormals();
+    this.mesh.geometry.computeFaceNormals();
+    this.mesh.geometry.verticesNeedUpdate = true;
+    this.mesh.geometry.elementsNeedUpdate = true;
+    this.mesh.geometry.normalsNeedUpdate = true;
+};
+
+Mesh.prototype.updateVertices = function() {
+    var vertices = this.mesh.geometry.vertices;
+    for (var i = 0; i < this.vertexArr.length; i++) {
+        var r;
+        this.vertexDeg[i] += 8;
+        r = this.vertexArr[i] + Math.sin(radian(this.vertexDeg[i])) * this.vertexWaveCoe;
+        vertices[i].normalize().multiplyScalar(r);
+    }
+    this.mesh.geometry.computeVertexNormals();
+    this.mesh.geometry.computeFaceNormals();
+    this.mesh.geometry.verticesNeedUpdate = true;
+    this.mesh.geometry.elementsNeedUpdate = true;
+    this.mesh.geometry.normalsNeedUpdate = true;
+};
+
+
+
+var PointLight = function() {
+    this.rad1 = 0;
+    this.rad2 = 0;
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.r = 0;
+    this.obj;
+};
+
+PointLight.prototype.init = function(scene, rad1, rad2, r, hex, intensity, distance) {
+    this.r = r;
+    this.obj = new THREE.PointLight(hex, intensity, distance);
+    this.setPosition(rad1, rad2);
+    scene.add(this.obj);
+};
+
+PointLight.prototype.setPosition = function(rad1, rad2) {
+    var points = pointSphere(rad1, rad2, this.r);
+    this.obj.position.set(points[0], points[1], points[2]);
+};
 
 
 function createText() {
@@ -882,7 +861,7 @@ function resizeRenderer() {
     bodyWidth  = document.body.clientWidth;
     bodyHeight = document.body.clientHeight;
     renderer.setSize(bodyWidth, bodyHeight);
-    camera.init(Math.radian(45), Math.radian(0), bodyWidth, bodyHeight);
+    camera.init(radian(45), radian(0), bodyWidth, bodyHeight);
 }
 
 function initThree() {
@@ -912,15 +891,15 @@ function init() {
     initThree();
 
     camera = new Camera();
-    camera.init(Math.radian(45), Math.radian(0), bodyWidth, bodyHeight);
+    camera.init(radian(45), radian(0), bodyWidth, bodyHeight);
 
     light = new HemiLight();
-    light.init(scene, Math.radian(0), Math.radian(120), 1000, 0x66ff99, 0x3366aa, 1);
+    light.init(scene, radian(0), radian(120), 1000, 0x66ff99, 0x3366aa, 1);
 
     ball = new Mesh();
     ball.init(scene, ballGeometry, ballMaterial);
 
-    // createText();
+    createText();
 
     renderloop();
     debounce(window, 'resize', function(event){
@@ -958,3 +937,4 @@ function play() {
 }
 
 loadFile();
+init();
