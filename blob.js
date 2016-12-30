@@ -10,8 +10,6 @@ var bodyWidth = document.body.clientWidth;
 var bodyHeight = document.body.clientHeight;
 var fps = 60;
 var lastTimeRender = +new Date();
-
-
 var canvas;
 var renderer;
 var scene;
@@ -28,6 +26,8 @@ var analyser = ctx.createAnalyser(); //returns an AnalyserNode, which provides r
 analyser.smoothingTimeConstant = 1;
 var mp3_location = 'davids_synth.mp3';
 
+
+// Camera Class
 
 var Camera = function() {
     this.width = 0;
@@ -75,24 +75,11 @@ Camera.prototype.initTrackBall = function() {
     this.trackball.minDistance = 500;
 };
 
-function randomInt(min, max){
-    return Math.floor(Math.random() * (max - min)) + min;
-}
+// Misc Functions
 
-function degree (radian) {
-    return radian / Math.PI * 180;
-}
 
-function radian(degrees) {
-    return degrees * Math.PI / 180;
-}
 
-function pointSphere(rad1, rad2, r) {
-    var x = Math.cos(rad1) * Math.cos(rad2) * r;
-    var z = Math.cos(rad1) * Math.sin(rad2) * r;
-    var y = Math.sin(rad1) * r;
-    return [x, y, z];
-}
+// HemiLight class
 
 var HemiLight = function() {
     this.rad1 = 0;
@@ -114,6 +101,8 @@ HemiLight.prototype.setPosition = function(rad1, rad2) {
     var points = pointSphere(rad1, rad2, this.r);
     this.obj.position.set(points[0], points[1], points[2]);
 };
+
+// Mesh class
 
 var Mesh = function() {
     this.r = 0;
@@ -174,7 +163,7 @@ Mesh.prototype.updateVertices = function() {
     this.mesh.geometry.normalsNeedUpdate = true;
 };
 
-
+// PointLight class
 
 var PointLight = function() {
     this.rad1 = 0;
@@ -219,6 +208,25 @@ function createText() {
     textMesh.position.set(-400, 150, 0);
     textMesh.rotation.x = -Math.PI / 4;
     scene.add(textMesh);
+}
+
+function randomInt(min, max){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function degree (radian) {
+    return radian / Math.PI * 180;
+}
+
+function radian(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+function pointSphere(rad1, rad2, r) {
+    var x = Math.cos(rad1) * Math.cos(rad2) * r;
+    var z = Math.cos(rad1) * Math.sin(rad2) * r;
+    var y = Math.sin(rad1) * r;
+    return [x, y, z];
 }
 
 function render() {
