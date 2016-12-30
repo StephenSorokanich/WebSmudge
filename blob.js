@@ -1,9 +1,30 @@
 /**
- * @author Eberhard Graether / http://egraether.com/
- * @author Mark Lundin 	/ http://mark-lundin.com
- * @author Simone Manini / http://daron1337.github.io
- * @author Luca Antiga 	/ http://lantiga.github.io
+ * Based on yoichi kobayashi's Wriggling sphere - https://codepen.io/ykob/pen/zGpjeK
+ * Eli Goberdon - https://github.com/egoberdon
+ * Stephen Sorokanich - https://github.com/StephenSorokanich
  */
+
+
+// setting up blob world
+var debounce = require('./debounce');
+var Camera = require('./camera');
+var PointLight = require('./pointLight');
+var HemiLight = require('./hemiLight');
+var Mesh = require('./mesh');
+var bodyWidth = document.body.clientWidth;
+var bodyHeight = document.body.clientHeight;
+var fps = 60;
+var frameTime;
+var lastTimeRender = +new Date();
+
+
+var canvas;
+var renderer;
+var scene;
+var camera;
+var light;
+var globe;
+var ball;
 
 //audio
 
@@ -613,103 +634,6 @@ THREE.TrackballControls = function ( object, domElement ) {
 THREE.TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototype );
 THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
 
-
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-    var Get = require('./get');
-    var get = new Get();
-    var debounce = require('./debounce');
-    var Camera = require('./camera');
-    var PointLight = require('./pointLight');
-    var HemiLight = require('./hemiLight');
-    var Mesh = require('./mesh');
-    var bodyWidth = document.body.clientWidth;
-    var bodyHeight = document.body.clientHeight;
-    var fps = 60;
-    var frameTime;
-    var lastTimeRender = +new Date();
-
-    var canvas;
-    var renderer;
-    var scene;
-    var camera;
-    var light;
-    var globe;
-    var ball;
-
-    var initThree = function() {
-        canvas = document.getElementById('canvas');
-        renderer = new THREE.WebGLRenderer({
-            antialias: true
-        });
-        if (!renderer) {
-            alert('Three.jsの初期化に失敗しました。');
-        }
-        bodyHeight = window.innerHeight;
-        bodyWidth = window.innerWidth;
-        renderer.setSize(bodyWidth, bodyHeight);
-        canvas.appendChild(renderer.domElement);
-        renderer.setClearColor(0xfcbd50, 1.0);
-
-        scene = new THREE.Scene();
-    };
-
-    var init = function() {
-        var ballGeometry = new THREE.SphereGeometry(360, 20, 20);
-        var ballMaterial = new THREE.MeshLambertMaterial({
-            color: 0xffffff,
-            shading: THREE.FlatShading
-        });
-
-        initThree();
-
-        camera = new Camera();
-        camera.init(get.radian(45), get.radian(0), bodyWidth, bodyHeight);
-
-        light = new HemiLight();
-        light.init(scene, get.radian(0), get.radian(120), 1000, 0x66ff99, 0x3366aa, 1);
-
-        ball = new Mesh();
-        ball.init(scene, ballGeometry, ballMaterial);
-
-        renderloop();
-        debounce(window, 'resize', function(event){
-            resizeRenderer();
-        });
-    };
-
-    var render = function() {
-        renderer.clear();
-
-        ball.updateVertices();
-
-        renderer.render(scene, camera.obj);
-    };
-
-    var renderloop = function() {
-        var now = +new Date();
-        requestAnimationFrame(renderloop);
-
-        if (now - lastTimeRender > 1000 / fps) {
-            render();
-            lastTimeRender = +new Date();
-        }
-        camera.trackball.update();
-    };
-
-    var resizeRenderer = function() {
-        bodyWidth  = document.body.clientWidth;
-        bodyHeight = document.body.clientHeight;
-        renderer.setSize(bodyWidth, bodyHeight);
-        camera.init(get.radian(45), get.radian(0), bodyWidth, bodyHeight);
-    };
-
-    init();
-
-},{"./camera":2,"./debounce":3,"./get":4,"./hemiLight":5,"./mesh":6,"./pointLight":7}],2:[function(require,module,exports){
-    var Get = require('./get');
-    var get = new Get();
-
-    var exports = function(){
         var Camera = function() {
             this.width = 0;
             this.height = 0;
@@ -758,13 +682,6 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
             this.trackball.minDistance = 500;
         };
 
-        return Camera;
-    };
-
-    module.exports = exports();
-
-},{"./get":4}],3:[function(require,module,exports){
-    module.exports = function(object, eventType, callback){
         var timer;
 
         object.addEventListener(eventType, function(event) {
@@ -773,9 +690,7 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
                 callback(event);
             }, 500);
         }, false);
-    };
 
-},{}],4:[function(require,module,exports){
     var exports = function(){
         var Get = function() {};
 
@@ -800,12 +715,6 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
 
         return Get;
     };
-
-    module.exports = exports();
-
-},{}],5:[function(require,module,exports){
-    var Get = require('./get');
-    var get = new Get();
 
     var exports = function(){
         var HemiLight = function() {
@@ -833,12 +742,6 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
         return HemiLight;
     };
 
-    module.exports = exports();
-
-},{"./get":4}],6:[function(require,module,exports){
-    var Get = require('./get');
-    var get = new Get();
-
     var exports = function() {
         var Mesh = function() {
             this.r = 0;
@@ -863,7 +766,7 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
             this.geometry.mergeVertices();
             this.updateVerticesInt();
             this.setPosition();
-            this.mesh.rotation.set(get.radian(45), 0,0);
+            this.mesh.rotation.set(Math.radian(45), 0,0);
 
             scene.add(this.mesh);
         };
@@ -892,7 +795,7 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
             for (var i = 0; i < this.vertexArr.length; i++) {
                 var r;
                 this.vertexDeg[i] += 8;
-                r = this.vertexArr[i] + Math.sin(get.radian(this.vertexDeg[i])) * this.vertexWaveCoe;
+                r = this.vertexArr[i] + Math.sin(Math.radian(this.vertexDeg[i])) * this.vertexWaveCoe;
                 vertices[i].normalize().multiplyScalar(r);
             }
             this.mesh.geometry.computeVertexNormals();
@@ -905,11 +808,6 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
         return Mesh;
     };
 
-    module.exports = exports();
-
-},{"./get":4}],7:[function(require,module,exports){
-    var Get = require('./get');
-    var get = new Get();
 
     var exports = function(){
         var PointLight = function() {
@@ -937,9 +835,98 @@ THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
         return PointLight;
     };
 
-    module.exports = exports();
 
-},{"./get":4}]},{},[1]);
+function createText() {
+    // add 3D text
+    materialFront = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    materialSide = new THREE.MeshBasicMaterial( { color: 0x000088 } );
+    materialArray = [ materialFront, materialSide ];
+    textParams = {
+        size: 30, height: 4, curveSegments: 3,
+        font: "helvetiker", weight: "bold", style: "normal",
+        bevelThickness: 1, bevelSize: 2, bevelEnabled: true,
+        material: 0, extrudeMaterial: 1
+    };
+    textGeom = new THREE.TextGeometry( "Hegel", textParams);
+
+    textMaterial = new THREE.MeshFaceMaterial(materialArray);
+    textMesh = new THREE.Mesh(textGeom, textMaterial );
+
+    textGeom.computeBoundingBox();
+    textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
+    textMesh.position.set(-400, 150, 0);
+    textMesh.rotation.x = -Math.PI / 4;
+    scene.add(textMesh);
+}
+
+function render() {
+    renderer.clear();
+
+    ball.updateVertices();
+
+    renderer.render(scene, camera.obj);
+}
+
+function renderloop(){
+    var now = +new Date();
+    requestAnimationFrame(renderloop);
+
+    if (now - lastTimeRender > 1000 / fps) {
+        render();
+        lastTimeRender = +new Date();
+    }
+    camera.trackball.update();
+}
+
+function resizeRenderer() {
+    bodyWidth  = document.body.clientWidth;
+    bodyHeight = document.body.clientHeight;
+    renderer.setSize(bodyWidth, bodyHeight);
+    camera.init(Math.radian(45), Math.radian(0), bodyWidth, bodyHeight);
+}
+
+function initThree() {
+    canvas = document.getElementById('canvas');
+    renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
+    if (!renderer) {
+        alert('Three.jsの初期化に失敗しました。');
+    }
+    bodyHeight = window.innerHeight;
+    bodyWidth = window.innerWidth;
+    renderer.setSize(bodyWidth, bodyHeight);
+    canvas.appendChild(renderer.domElement);
+    renderer.setClearColor(0xfcbd50, 1.0);
+
+    scene = new THREE.Scene();
+}
+
+function init() {
+    var ballGeometry = new THREE.SphereGeometry(360, 20, 20);
+    var ballMaterial = new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        shading: THREE.FlatShading
+    });
+
+    initThree();
+
+    camera = new Camera();
+    camera.init(Math.radian(45), Math.radian(0), bodyWidth, bodyHeight);
+
+    light = new HemiLight();
+    light.init(scene, Math.radian(0), Math.radian(120), 1000, 0x66ff99, 0x3366aa, 1);
+
+    ball = new Mesh();
+    ball.init(scene, ballGeometry, ballMaterial);
+
+    // createText();
+
+    renderloop();
+    debounce(window, 'resize', function(event){
+        resizeRenderer();
+    });
+}
 
 function loadFile() {
     var req = new XMLHttpRequest();
