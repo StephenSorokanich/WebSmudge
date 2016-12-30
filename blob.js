@@ -75,10 +75,6 @@ Camera.prototype.initTrackBall = function() {
     this.trackball.minDistance = 500;
 };
 
-// Misc Functions
-
-
-
 // HemiLight class
 
 var HemiLight = function() {
@@ -187,29 +183,6 @@ PointLight.prototype.setPosition = function(rad1, rad2) {
 };
 
 
-function createText() {
-    // add 3D text
-    materialFront = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-    materialSide = new THREE.MeshBasicMaterial( { color: 0x000088 } );
-    materialArray = [ materialFront, materialSide ];
-    textParams = {
-        size: 30, height: 4, curveSegments: 3,
-        font: "helvetiker", weight: "bold", style: "normal",
-        bevelThickness: 1, bevelSize: 2, bevelEnabled: true,
-        material: 0, extrudeMaterial: 1
-    };
-    textGeom = new THREE.TextGeometry( "Hegel", textParams);
-
-    textMaterial = new THREE.MeshFaceMaterial(materialArray);
-    textMesh = new THREE.Mesh(textGeom, textMaterial );
-
-    textGeom.computeBoundingBox();
-    textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
-    textMesh.position.set(-400, 150, 0);
-    textMesh.rotation.x = -Math.PI / 4;
-    scene.add(textMesh);
-}
-
 function randomInt(min, max){
     return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -272,6 +245,63 @@ function initThree() {
     scene = new THREE.Scene();
 }
 
+// takes a list of words and places them in the scene
+function createText(words){
+
+    var starting_x = -100;
+    var starting_z = -100;
+
+    for (var i = 0; i < words.length; i++) {
+        textLoader(words[i], starting_x + 100 * i, null, starting_z + 100 * i)
+
+    }
+
+}
+
+function textLoader (word, x, y, z){
+    if( !x ) {
+        x = 0;
+    }
+
+    if( !y ) {
+        y = 400;
+    }
+
+    if ( !z ) {
+        z = 0;
+    }
+
+    var loader = new THREE.FontLoader();
+    loader.load( 'fonts/Roboto_Slab_Regular.json', function ( font ) {
+
+        var textGeometry = new THREE.TextGeometry( word, {
+
+            font: font,
+
+            size: 50,
+            height: 10,
+            curveSegments: 12,
+
+            bevelThickness: 1,
+            bevelSize: 1,
+            bevelEnabled: true
+
+        });
+
+        var textMaterial = new THREE.MeshPhongMaterial(
+            { color: 0xFE69BD, specular: 0xffffff }
+        );
+
+        var mesh = new THREE.Mesh( textGeometry, textMaterial );
+
+        scene.add( mesh );
+
+        mesh.position.set(x, y, z);
+        mesh.rotation.set(0, Math.PI/2, 0);
+
+    });
+}
+
 function init() {
     var ballGeometry = new THREE.SphereGeometry(360, 20, 20);
     var ballMaterial = new THREE.MeshLambertMaterial({
@@ -290,13 +320,13 @@ function init() {
     ball = new Mesh();
     ball.init(scene, ballGeometry, ballMaterial);
 
-    // createText();
+    createText(['Hegel', 'Sp(r)ankov', 'Jar Jar Abrams']);
 
     renderloop();
     resizeRenderer();
 }
 
-function loadFile() {
+function loadAudio() {
     var req = new XMLHttpRequest();
     req.open("GET",mp3_location,true);
     req.responseType = "arraybuffer";
@@ -325,5 +355,5 @@ function play() {
     src.start();
 }
 
-loadFile();
+loadAudio();
 init();
