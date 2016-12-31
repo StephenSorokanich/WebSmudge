@@ -134,16 +134,7 @@ Mesh.prototype.updateVerticesInt = function() {
     for (var i = 0; i < vertices.length; i++) {
         var r = this.r;
         this.vertexArr[i] = r;
-        this.vertexDeg[i] = 1;   //randomInt(0, 360);
-        
-        var r2 = Math.sqrt(vertices[i]['y']*vertices[i]['y']+vertices[i]['x']*vertices[i]['x']+vertices[i]['z']*vertices[i]['z']);
-        var phi = Math.atan2(vertices[i]['y'] , vertices[i]['x']);
-        var theta = Math.acos(vertices[i]['z'] / r2);
-        this.vertexDeg[i] += 6;
- 
-        r = this.vertexArr[i] + 
-            10*(2-.75*Math.exp(Math.sin(10*phi+Math.cos(2*this.vertexDeg[i]/30)) +
-            Math.sin(.5*this.vertexDeg[i]/30)*Math.exp(-Math.cos(10*theta-Math.cos(2.5*this.vertexDeg[i]/30)))));
+        this.vertexDeg[i] = 45;   //randomInt(0, 360);
         
         vertices[i].normalize().multiplyScalar(r);
     }
@@ -158,7 +149,18 @@ Mesh.prototype.updateVertices = function() {
     var vertices = this.mesh.geometry.vertices;
     for (var i = 0; i < this.vertexArr.length; i++) {
         var r;
-        this.vertexDeg[i] += 8;
+        
+                
+        var r2 = Math.sqrt(vertices[i]['y']*vertices[i]['y']+vertices[i]['x']*vertices[i]['x']+vertices[i]['z']*vertices[i]['z']);
+        var phi = Math.atan2(vertices[i]['y'] , vertices[i]['x']);
+        var theta = Math.acos(vertices[i]['z'] / r2);
+        this.vertexDeg[i] += 6;
+ 
+        r = this.vertexArr[i] + 
+            10*(2-.75*Math.exp(Math.sin(10*phi+Math.cos(2*this.vertexDeg[i]/30)) +
+            Math.sin(.5*this.vertexDeg[i]/30)*Math.exp(-Math.cos(10*theta-Math.cos(2.5*this.vertexDeg[i]/30)))));
+        
+        this.vertexDeg[i] += 6;
         r = this.vertexArr[i] + Math.sin(radian(this.vertexDeg[i])) * this.vertexWaveCoe;
         vertices[i].normalize().multiplyScalar(r);
     }
