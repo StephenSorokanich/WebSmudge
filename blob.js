@@ -134,7 +134,17 @@ Mesh.prototype.updateVerticesInt = function() {
     for (var i = 0; i < vertices.length; i++) {
         var r = this.r;
         this.vertexArr[i] = r;
-        this.vertexDeg[i] = randomInt(0, 360);
+        this.vertexDeg[i] = 1;   //randomInt(0, 360);
+        
+        var r2 = Math.sqrt(vertices[i]['y']*vertices[i]['y']+vertices[i]['x']*vertices[i]['x']+vertices[i]['z']*vertices[i]['z']);
+        var phi = Math.atan2(vertices[i]['y'] , vertices[i]['x']);
+        var theta = Math.acos(vertices[i]['z'] / r2);
+        this.vertexDeg[i] += 6;
+ 
+        r = this.vertexArr[i] + 
+            10*(2-.75*Math.exp(Math.sin(10*phi+Math.cos(2*this.vertexDeg[i]/30)) +
+            Math.sin(.5*this.vertexDeg[i]/30)*Math.exp(-Math.cos(10*theta-Math.cos(2.5*this.vertexDeg[i]/30)))));
+        
         vertices[i].normalize().multiplyScalar(r);
     }
     this.mesh.geometry.computeVertexNormals();
@@ -303,7 +313,7 @@ function textLoader (word, x, y, z){
 }
 
 function init() {
-    var ballGeometry = new THREE.SphereGeometry(360, 20, 20);
+    var ballGeometry = new THREE.SphereGeometry(360, 100, 100);
     var ballMaterial = new THREE.MeshLambertMaterial({
         color: 0xffffff,
         shading: THREE.FlatShading
