@@ -160,8 +160,6 @@ Mesh.prototype.updateVertices = function() {
             10*(2-.75*Math.exp(Math.sin(10*phi+Math.cos(2*this.vertexDeg[i]/30)) +
             Math.sin(.5*this.vertexDeg[i]/30)*Math.exp(-Math.cos(10*theta-Math.cos(2.5*this.vertexDeg[i]/30)))));
         
-        this.vertexDeg[i] += 6;
-        r = this.vertexArr[i] + Math.sin(radian(this.vertexDeg[i])) * this.vertexWaveCoe;
         vertices[i].normalize().multiplyScalar(r);
     }
     this.mesh.geometry.computeVertexNormals();
