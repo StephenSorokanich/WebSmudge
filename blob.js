@@ -299,7 +299,7 @@ function textLoader (word, x, y, z){
         });
 
         var textMaterial = new THREE.MeshPhongMaterial(
-            { color: 0xFE69BD, specular: 0xffffff }
+            { color: 0xe8b2bd, specular: 0xf9c672 }
         );
 
         var mesh = new THREE.Mesh( textGeometry, textMaterial );
