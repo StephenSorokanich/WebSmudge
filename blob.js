@@ -113,7 +113,23 @@ var Mesh = function() {
 Mesh.prototype.init = function(scene, geometry, material) {
     this.geometry = geometry;
     this.material = material;
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    
+    for (var i = 0, l = this.geometry.faces.length; i<l; i++){
+        var face = this.geometry.faces[ i ];
+		face.materialIndex = Math.floor( Math.random() * this.material.length );
+        }
+    
+    //this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.geometry.sortFacesByMaterialIndex();
+    objects = [];
+    //this.mesh = new THREE.Mesh(this.geometry, this.material);
+    
+    
+    this.geometry.materials = this.material;
+    
+    
+    this.mesh = new THREE.Mesh(this.geometry, new THREE.MultiMaterial(this.geometry.materials));
+    
     this.r = this.geometry.parameters.radius;
     this.vertexWaveCoe = this.r / 30;
 
@@ -122,6 +138,7 @@ Mesh.prototype.init = function(scene, geometry, material) {
     this.setPosition();
     this.mesh.rotation.set(radian(45), 0,0);
 
+    objects.push(this.mesh)
     scene.add(this.mesh);
 };
 
@@ -169,6 +186,65 @@ Mesh.prototype.updateVertices = function() {
     this.mesh.geometry.normalsNeedUpdate = true;
 };
 
+
+Mesh.prototype.updateVertsAndFaces = function() {
+    var vertices = this.mesh.geometry.vertices;
+    for (var i = 0; i < this.vertexArr.length; i++) {
+        var r;
+        
+                
+        var r2 = Math.sqrt(vertices[i]['y']*vertices[i]['y']+vertices[i]['x']*vertices[i]['x']+vertices[i]['z']*vertices[i]['z']);
+        var phi = Math.atan2(vertices[i]['y'] , vertices[i]['x']);
+        var theta = Math.acos(vertices[i]['z'] / r2);
+        this.vertexDeg[i] += 6;
+ 
+        r = this.vertexArr[i] + 
+            10*(2-.75*Math.exp(Math.sin(10*phi+Math.cos(2*this.vertexDeg[i]/30)) +
+            Math.sin(.5*this.vertexDeg[i]/30)*Math.exp(-Math.cos(10*theta-Math.cos(2.5*this.vertexDeg[i]/30)))));
+        
+        vertices[i].normalize().multiplyScalar(r);
+    }
+    
+    //this.material = material;
+    //this.mesh.geometry.materials = this.material;
+    
+    for (var i = 0, l = this.mesh.geometry.faces.length; i<l; i++){
+        var face = this.mesh.geometry.faces[ i ];
+        var face2 = face.a;
+        var face3 = face.b;
+        var face4 = face.c;
+        var x = .3*(vertices[face2].x+vertices[face3].x+vertices[face4].x);
+        var y = .3*(vertices[face2].y+vertices[face3].y+vertices[face4].y);
+        var z = .3*(vertices[face2].z+vertices[face3].z+vertices[face4].z);
+        var r = Math.sqrt(x*x+y*y+z*z);
+        if ( r < 250) {
+            face.materialIndex = 0;
+        }
+        else if ( 250 < r && r< 300 ) {
+            face.materialIndex = 1;
+        }
+        else if ( 300 < r && r< 350) {
+            face.materialIndex = 2;
+        }
+        else {
+            face.materialIndex = 3;
+        }
+		//face.materialIndex = Math.floor( Math.random() * this.material.length );
+        }
+    
+    //this.mesh.geometry.sortFacesByMaterialIndex();
+    //objects = [];
+    //this.mesh.geometry.materials = this.material;
+    //};
+    
+    this.mesh.geometry.computeVertexNormals();
+    this.mesh.geometry.computeFaceNormals();
+    this.mesh.geometry.verticesNeedUpdate = true;
+    this.mesh.geometry.elementsNeedUpdate = true;
+    this.mesh.geometry.normalsNeedUpdate = true;
+};
+
+
 // PointLight class
 
 var PointLight = function() {
@@ -214,14 +290,16 @@ function pointSphere(rad1, rad2, r) {
 
 function render() {
     renderer.clear();
-
-    ball.updateVertices();
+    //this.material = material;
+    //ball.updateVertices();
+    ball.updateVertsAndFaces();
 
     renderer.render(scene, camera.obj);
 }
 
 function renderloop(){
     var now = +new Date();
+    //this.material = material;
     requestAnimationFrame(renderloop);
 
     if (now - lastTimeRender > 1000 / fps) {
@@ -244,7 +322,7 @@ function initThree() {
         antialias: true
     });
     if (!renderer) {
-        alert('Three.jsの初期化に失敗しました。');
+        alert('Three.js????????????');
     }
     bodyHeight = window.innerHeight;
     bodyWidth = window.innerWidth;
@@ -314,18 +392,23 @@ function textLoader (word, x, y, z){
 
 function init() {
     var ballGeometry = new THREE.SphereGeometry(360, 100, 100);
-    var ballMaterial = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        shading: THREE.FlatShading
-    });
-
+    //var ballMaterial = new THREE.MeshLambertMaterial({
+    //    color: 0xffffff,
+    //    shading: THREE.FlatShading
+    //});
+    var ballMaterial = [];
+    ballMaterial.push( new THREE.MeshLambertMaterial( { color: 0xffda77, shading: THREE.SmoothShading }));
+    ballMaterial.push( new THREE.MeshPhongMaterial( { color: 0xf2e7e3, specular: 0xceccca, shading: THREE.SmoothShading }));
+    ballMaterial.push( new THREE.MeshPhongMaterial( { color: 0xf78360, specular: 0xceccca, shading: THREE.SmoothShading }));
+    ballMaterial.push( new THREE.MeshPhongMaterial( { color: 0xf99c7f, specular: 0xceccca, shading: THREE.SmoothShading }));
+    
     initThree();
 
     camera = new Camera();
     camera.init(radian(45), radian(0), bodyWidth, bodyHeight);
 
     light = new HemiLight();
-    light.init(scene, radian(0), radian(120), 1000, 0x66ff99, 0x3366aa, 1);
+    light.init(scene, radian(0), radian(120), 1000, 0xffffff, 0x515150, 1);
 
     ball = new Mesh();
     ball.init(scene, ballGeometry, ballMaterial);
