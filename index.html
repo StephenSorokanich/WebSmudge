@@ -32,9 +32,9 @@
                 container = document.getElementById('container');
 				/* document.body.appendChild( container ); */
                 
-                var HEIGHT = document.getElementById("container").clientHeight,
-                WIDTH = document.getElementById("container").clientWidth;
-    
+                var HEIGHT = document.getElementById("container").clientHeight;
+                var WIDTH = document.getElementById("container").clientWidth;
+
 			    var windowHalfX = WIDTH / 2;
 			    var windowHalfY = HEIGHT/ 2;
 				
@@ -83,7 +83,7 @@
                     object.scale.x = 100;
                     object.scale.y = 100;
                     object.scale.z = 100;
-                    obj = object
+                    obj = object;
 					scene.add( obj );
 
 				} );
@@ -101,6 +101,8 @@
 
 
 			function onDocumentMouseMove( event ) {
+                var windowHalfX = document.getElementById("container").clientHeight / 2;
+                var windowHalfY = document.getElementById("container").clientWidth / 2;
 				mouseX = ( event.clientX - windowHalfX ) / 2;
 				mouseY = ( event.clientY - windowHalfY ) / 2;
 			}
@@ -142,6 +144,7 @@
   <li class="w3-theme-l1"><a href="index.html" class="w3-hover-white">Home</a></li>
   <li class="w3-hide-small"><a href="#" class="w3-hover-white">Contact</a></li>
   <li class="w3-hide-medium w3-hide-small"><a href="#" class="w3-hover-white">Links</a></li>
+  <li class="w3-hide-medium w3-hide-small"><a href="blob.html" class="w3-hover-white">Blobs</a></li>
 </ul>
     
 <!-- Main content: shift it to the right by 250 pixels when the sidenav is visible -->  
