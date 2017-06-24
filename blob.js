@@ -391,6 +391,7 @@ function textLoader (word, x, y, z){
 }
 
 function init() {
+    var ballGeometry = new THREE.SphereGeometry(360, 120, 120);
     //var ballMaterial = new THREE.MeshLambertMaterial({
     //    color: 0xffffff,
     //    shading: THREE.FlatShading
